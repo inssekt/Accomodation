@@ -1,99 +1,96 @@
 using UnityEngine;
-using UnityEngine.Events;
 
+/// <summary>
+/// Shared code for every enemy: finds the player, tints the sprite, and handles death.
+/// A new enemy inherits from this and writes its behaviour in Tick().
+/// If a child class overrides Awake(), it must call base.Awake() first.
+/// </summary>
 [RequireComponent(typeof(Health))]
 public abstract class EnemyBase : MonoBehaviour
 {
-    [Header("Targeting")]
+    [Header("Target")]
+    [Tooltip("The enemy hunts whichever object has this tag.")]
     [SerializeField] private string targetTag = "Player";
 
-    [Tooltip("Layers that block sight (walls). Leave empty to ignore line of sight.")]
-    [SerializeField] private LayerMask sightBlockers;
+    [Header("Visuals")]
+    [Tooltip("Used for the wind-up flash. Found in the children automatically if left empty.")]
+    [SerializeField] protected SpriteRenderer spriteRenderer;
 
     [Header("Death")]
-    [Tooltip("Seconds between dying and being removed. Use it to play a death animation.")]
+    [Tooltip("Seconds between dying and being removed from the scene. Hook death effects to Health > On Died.")]
     [SerializeField, Min(0f)] private float destroyDelay = 0.3f;
-    public UnityEvent onDeath;
 
-    [Header("Placeholder feedback")]
-    [SerializeField] private SpriteRenderer tintRenderer;
+    protected Health health;
+    protected Transform target;
+    protected Health targetHealth;
 
-    protected Health HealthComponent { get; private set; }
-    protected Transform Target { get; private set; }
+    private Color _baseColor = Color.white;
+    private float _nextSearchTime;
 
-    private IDamageable _targetDamageable;
-    private float _nextTargetSearchTime;
-    private Color _baseTint = Color.white;
-
-    /// <summary>True when there is a living target. Searches for one (twice a second) if needed.</summary>
-    protected bool HasValidTarget
-    {
-        get
-        {
-            if (Target == null) SearchForTarget();
-            return Target != null && (_targetDamageable == null || _targetDamageable.IsAlive);
-        }
-    }
+    /// <summary>True while there is a living target to act on.</summary>
+    protected bool HasTarget => target != null && targetHealth != null && targetHealth.IsAlive;
 
     protected virtual void Awake()
     {
-        HealthComponent = GetComponent<Health>();
-        if (tintRenderer == null) tintRenderer = GetComponentInChildren<SpriteRenderer>();
-        if (tintRenderer != null) _baseTint = tintRenderer.color;
+        health = GetComponent<Health>();
+        health.onDied.AddListener(HandleDeath);
+
+        if (spriteRenderer == null) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        if (spriteRenderer != null) _baseColor = spriteRenderer.color;
     }
 
-    protected virtual void OnEnable() => HealthComponent.Died += HandleDied;
-
-    protected virtual void OnDisable()
+    private void Update()
     {
-        if (HealthComponent != null) HealthComponent.Died -= HandleDied;
+        if (!health.IsAlive) return;
+
+        FindTargetIfNeeded();
+        Tick();
     }
 
-    protected bool HasLineOfSight(Vector2 from, Vector2 to)
-    {
-        if (sightBlockers.value == 0) return true;
-        return Physics2D.Linecast(from, to, sightBlockers).collider == null;
-    }
+    /// <summary>Called every frame while the enemy is alive. Put the behaviour here.</summary>
+    protected abstract void Tick();
 
     protected void SetTint(Color color)
     {
-        if (tintRenderer != null) tintRenderer.color = color;
+        if (spriteRenderer != null) spriteRenderer.color = color;
     }
 
     protected void ClearTint()
     {
-        if (tintRenderer != null) tintRenderer.color = _baseTint;
+        if (spriteRenderer != null) spriteRenderer.color = _baseColor;
     }
 
-    /// <summary>Optional hook for subclasses: drop loot, spawn effects.</summary>
-    protected virtual void OnDied() { }
-
-    private void SearchForTarget()
+    private void FindTargetIfNeeded()
     {
-        if (Time.time < _nextTargetSearchTime) return;
-        _nextTargetSearchTime = Time.time + 0.5f;
+        if (target != null || Time.time < _nextSearchTime) return;
 
-        GameObject found = GameObject.FindGameObjectWithTag(targetTag);
-        Target = found != null ? found.transform : null;
-        _targetDamageable = found != null ? found.GetComponent<IDamageable>() : null;
+        _nextSearchTime = Time.time + 0.5f;   // look twice a second, not every frame
+
+        GameObject found = GameObject.FindWithTag(targetTag);
+        if (found == null) return;
+
+        targetHealth = found.GetComponent<Health>();
+        if (targetHealth == null)
+        {
+            Debug.LogWarning($"{name}: the object tagged '{targetTag}' has no Health component.", this);
+            return;
+        }
+
+        target = found.transform;
     }
 
-    private void HandleDied()
+    private void HandleDeath()
     {
-        StopAllCoroutines();
-        onDeath?.Invoke();
-        OnDied();
-
         foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) col.enabled = false;
 
         Rigidbody2D body = GetComponent<Rigidbody2D>();
         if (body != null)
         {
-            body.SetVelocity(Vector2.zero);
+            body.linearVelocity = Vector2.zero;
             body.simulated = false;
         }
 
-        enabled = false;
+        ClearTint();
         Destroy(gameObject, destroyDelay);
     }
 }
