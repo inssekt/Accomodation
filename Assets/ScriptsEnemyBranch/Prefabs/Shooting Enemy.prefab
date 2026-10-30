@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6617966550292757565}
   - component: {fileID: 388472913649697968}
   m_Layer: 9
-  m_Name: vISUAL
+  m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,8 +81,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: eb5ff5365b71a408f82170d561d7fa91, type: 3}
-  m_Color: {r: 0.7924528, g: 0.1009256, b: 0.1009256, a: 1}
+  m_Sprite: {fileID: 5956690970657654663, guid: 56796446ce1604fb4b7fba94716f20a3, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -103,6 +103,8 @@ GameObject:
   - component: {fileID: 7220318662564898108}
   - component: {fileID: 1688072460109229747}
   - component: {fileID: 1362599945767788042}
+  - component: {fileID: 8806413368978455509}
+  - component: {fileID: 4526173190311357726}
   m_Layer: 9
   m_Name: Shooting Enemy
   m_TagString: Untagged
@@ -141,7 +143,19 @@ MonoBehaviour:
   maxHealth: 5
   onDamaged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4526173190311357726}
+        m_TargetAssemblyTypeName: EnemyAnimator, Assembly-CSharp
+        m_MethodName: PlayHurt
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onDied:
     m_PersistentCalls:
       m_Calls: []
@@ -167,8 +181,8 @@ MonoBehaviour:
     m_Bits: 0
   fireInterval: 1.5
   windupTime: 0.4
-  windupColor: {r: 1, g: 0.6, b: 0.2, a: 1}
-  projectilePrefab: {fileID: 0}
+  windupColor: {r: 1, g: 1, b: 1, a: 1}
+  projectilePrefab: {fileID: 7582804196081906151, guid: 0b8d5b0c991504aaea3410065f92502d, type: 3}
   damage: 10
   projectileSpeed: 6
   projectileLifetime: 4
@@ -177,12 +191,31 @@ MonoBehaviour:
   aimAtPlayer: 1
   fixedAngle: 0
   spinPerShot: 0
+  canMove: 0
+  areaSize: {x: 6, y: 4}
+  moveSpeed: 1.5
+  minPauseTime: 1
+  maxPauseTime: 3
+  pauseAfterShot: 0.3
+  moveWhileTargetVisible: 1
   onWindup:
     m_PersistentCalls:
       m_Calls: []
   onFire:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4526173190311357726}
+        m_TargetAssemblyTypeName: EnemyAnimator, Assembly-CSharp
+        m_MethodName: PlayAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!61 &1362599945767788042
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -229,3 +262,48 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!50 &8806413368978455509
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2775928527858593270}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 10
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!114 &4526173190311357726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2775928527858593270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 867ff4e35d52641efa210c51ce3e821f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimator
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  movingThreshold: 0.1
+  artFacesLeft: 0
+  flipDeadzone: 0.05
+  faceTag: Player
