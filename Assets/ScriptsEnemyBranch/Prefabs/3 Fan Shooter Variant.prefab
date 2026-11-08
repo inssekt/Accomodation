@@ -32,6 +32,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: 3 Fan Shooter Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 4526173190311357726, guid: 19a5eacf558704b34949848a4ca3b204, type: 3}
+      propertyPath: artFacesLeft
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7220318662564898108, guid: 19a5eacf558704b34949848a4ca3b204, type: 3}
+      propertyPath: maxHealth
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8484416436540923860, guid: 19a5eacf558704b34949848a4ca3b204, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.01
@@ -75,5 +83,51 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2775928527858593270, guid: 19a5eacf558704b34949848a4ca3b204, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8750118000751838223}
   m_SourcePrefab: {fileID: 100100000, guid: 19a5eacf558704b34949848a4ca3b204, type: 3}
+--- !u!1 &4862074252596815963 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2775928527858593270, guid: 19a5eacf558704b34949848a4ca3b204, type: 3}
+  m_PrefabInstance: {fileID: 7349763044479157677}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-8750118000751838223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4862074252596815963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3fa4aa051834474a97a5bc488276a7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyCorpse
+  deathSprite: {fileID: 0}
+  settledColor: {r: 0.3773585, g: 0.37201852, b: 0.37201852, a: 1}
+  settledSortingOrderChange: 0
+  spriteRenderer: {fileID: 0}
+  flingSpeed: 16
+  slideDrag: 4
+  spinSpeed: 540
+  wallBounce: 0.4
+  stopSpeed: 0.5
+  maxFlingTime: 1.5
+  flingAwayFromTag: Player
+  corpseLayerName: Corpses
+  damageToEnemies: 1
+  minDamageSpeed: 3
+  speedKeptAfterHit: 0.6
+  maxCorpsesInScene: 50
+  alsoSwitchOff: []
+  onLaunched:
+    m_PersistentCalls:
+      m_Calls: []
+  onHitEnemy:
+    m_PersistentCalls:
+      m_Calls: []
+  onSettled:
+    m_PersistentCalls:
+      m_Calls: []

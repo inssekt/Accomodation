@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 1362599945767788042}
   - component: {fileID: 8806413368978455509}
   - component: {fileID: 4526173190311357726}
+  - component: {fileID: -5634616387104168631}
   m_Layer: 9
   m_Name: Shooting Enemy
   m_TagString: Untagged
@@ -140,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3abe869c80244a1b8003db82ccc38a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 5
+  maxHealth: 1
   onDamaged:
     m_PersistentCalls:
       m_Calls:
@@ -307,3 +308,41 @@ MonoBehaviour:
   artFacesLeft: 0
   flipDeadzone: 0.05
   faceTag: Player
+--- !u!114 &-5634616387104168631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2775928527858593270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3fa4aa051834474a97a5bc488276a7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyCorpse
+  deathSprite: {fileID: 0}
+  settledColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  settledSortingOrderChange: 0
+  spriteRenderer: {fileID: 0}
+  flingSpeed: 16
+  slideDrag: 4
+  spinSpeed: 540
+  wallBounce: 0.4
+  stopSpeed: 0.5
+  maxFlingTime: 1.5
+  flingAwayFromTag: Player
+  corpseLayerName: Corpses
+  damageToEnemies: 1
+  minDamageSpeed: 3
+  speedKeptAfterHit: 0.6
+  maxCorpsesInScene: 50
+  alsoSwitchOff: []
+  onLaunched:
+    m_PersistentCalls:
+      m_Calls: []
+  onHitEnemy:
+    m_PersistentCalls:
+      m_Calls: []
+  onSettled:
+    m_PersistentCalls:
+      m_Calls: []
