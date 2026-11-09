@@ -3,17 +3,17 @@ using UnityEngine;
 /// <summary>
 /// A freeze frame: the whole game stops for a split second when something is hit, which makes hits feel heavy.
 /// Put it on the Main Camera, next to Camera Shake (or on any object that stays in the scene).
-/// Shake On Damage plays it automatically. Hit freezes for Hit Duration, Damaged for Damaged Duration.
+/// Shake On Damage asks it to freeze, using the Freeze Time set on whichever object was damaged.
 /// It works by setting Time.timeScale to 0, so movement, physics and animation all stop.
 /// Audio carries on, and so does Camera Shake while its Use Unscaled Time is ticked.
 /// </summary>
 public class HitStop : MonoBehaviour
 {
-    [Header("Freeze lengths (seconds)")]
-    [Tooltip("Freeze when an attack connects. 0.04 to 0.08 is a tiny hitch. Above 0.12 it starts to feel like lag. 0 = no freeze.")]
-    [SerializeField, Range(0f, 0.3f)] private float hitDuration = 0.05f;
-    [Tooltip("Freeze when the player takes damage. 0 = no freeze.")]
-    [SerializeField, Range(0f, 0.3f)] private float damagedDuration = 0f;
+    [Header("Settings")]
+    [Tooltip("Turns every freeze up or down. 0 = no freezing at all, which is handy for an accessibility option.")]
+    [SerializeField, Range(0f, 2f)] private float intensity = 1f;
+    [Tooltip("No freeze lasts longer than this, in seconds, whatever Freeze Time an object asks for.")]
+    [SerializeField, Min(0.01f)] private float maxFreeze = 0.15f;
  
     /// <summary>The freeze in the scene, so other scripts can find it.</summary>
     public static HitStop Instance { get; private set; }
@@ -41,21 +41,10 @@ public class HitStop : MonoBehaviour
         EndFreeze();
     }
  
-    /// <summary>For Inspector events: freezes for Hit Duration.</summary>
-    public void PlayHit()
-    {
-        Play(hitDuration);
-    }
- 
-    /// <summary>For Inspector events: freezes for Damaged Duration.</summary>
-    public void PlayDamaged()
-    {
-        Play(damagedDuration);
-    }
- 
     /// <summary>Freezes the game for this many real seconds.</summary>
     public void Play(float duration)
     {
+        duration = Mathf.Min(duration * intensity, maxFreeze);
         if (duration <= 0f) return;
  
         if (_frozen)

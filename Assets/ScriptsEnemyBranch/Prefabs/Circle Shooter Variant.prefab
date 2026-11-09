@@ -83,6 +83,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2775928527858593270, guid: 19a5eacf558704b34949848a4ca3b204, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1064338928841008241}
+    - targetCorrespondingSourceObject: {fileID: 2775928527858593270, guid: 19a5eacf558704b34949848a4ca3b204, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7143337465012449191}
   m_SourcePrefab: {fileID: 100100000, guid: 19a5eacf558704b34949848a4ca3b204, type: 3}
 --- !u!1 &308089465157568689 stripped
 GameObject:
@@ -127,3 +130,19 @@ MonoBehaviour:
   onSettled:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &-7143337465012449191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308089465157568689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eded7b7695eb2448c86bdd88f60cf5b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShakeOnDamage
+  kind: 0
+  strengthMultiplier: 1
+  freezeTime: 0.05
+  logToConsole: 0
