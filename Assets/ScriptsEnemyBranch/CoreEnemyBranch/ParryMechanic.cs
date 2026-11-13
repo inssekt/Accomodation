@@ -3,8 +3,8 @@ using UnityEngine.InputSystem;
 
 public class ParryMechanic : MonoBehaviour
 {
-    public float parryWindow = 0.2f;   // how long the parry stays active
-    public float cooldown = 0.5f;      // time before you can parry again
+    public float parryWindow = 1f;   // how long the parry stays active
+    public float cooldown = 3f;      // time before you can parry again
 
     public bool IsParrying { get; private set; }
 
