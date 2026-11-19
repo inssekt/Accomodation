@@ -185,4 +185,18 @@ public class MeleeEnemy : EnemyBase
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, hitRange);
     }
+    //Parry Mechanic follow back on enemy
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        var parry = other.GetComponentInParent<ParryMechanic>();
+        Debug.Log("Hit " + other.name + " | parry found: " + (parry != null) + " | parrying: " + (parry != null && parry.IsParrying));
+
+        if (parry != null && parry.IsParrying)
+        {
+            Debug.Log("Parried!");
+            return;
+        }
+
+        // deal damage as normal
+    }
 }

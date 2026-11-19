@@ -26,17 +26,4 @@ public class ParryMechanic : MonoBehaviour
         if (IsParrying && Time.time >= parryEndTime)
             IsParrying = false;
     }
-    void OnTriggerEnter(Collider other)
-    {
-        var parry = other.GetComponentInParent<ParryMechanic>();
-        Debug.Log("Hit " + other.name + " | parry found: " + (parry != null) + " | parrying: " + (parry != null && parry.IsParrying));
-
-        if (parry != null && parry.IsParrying)
-        {
-            Debug.Log("Parried!");
-            return;
-        }
-
-        // deal damage as normal
-    }
 }
